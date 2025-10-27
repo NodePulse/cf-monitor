@@ -80,7 +80,10 @@ function processSubmissionsByTime(
   const firstSubmissionDate = new Date(submissions[0].creationTimeSeconds * 1000);
   const lastSubmissionDate = new Date(submissions[submissions.length - 1].creationTimeSeconds * 1000);
 
-  let intervalFns, formatStr, startOfPeriod, endOfPeriod;
+  let intervalFns: (interval: { start: Date; end: Date }) => Date[];
+  let formatStr: string;
+  let startOfPeriod: (date: Date) => Date;
+  let endOfPeriod: (date: Date) => Date;
 
   switch (period) {
     case 'weekly':
