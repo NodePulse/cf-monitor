@@ -16,6 +16,7 @@ import { LoadingScreen } from "@/components/LoadingScreen";
 import { DataTable } from "@/components/DataTable";
 import { Pagination } from "@/components/Pagination";
 import { TableCell, TableRow } from "@/components/ui/table";
+import { Submission } from "@/types";
 import { format, parseISO, getWeek, getYear } from "date-fns";
 
 // 🎯 Define points based on rating
@@ -66,7 +67,8 @@ export default function PointsSystemPage() {
     pointsByYear,
     submissionsByDate,
   } = useMemo(() => {
-    const subsByDate: Record<string, any[]> = {};
+    // The useMemo hook is used to memoize the result of a function call.
+    const subsByDate: Record<string, Submission[]> = {};
     const ptsByDate: Record<string, number> = {};
     const ptsByWeek: Record<string, number> = {};
     const ptsByMonth: Record<string, number> = {};
@@ -107,7 +109,7 @@ export default function PointsSystemPage() {
   const todayKey = format(new Date(), "yyyy-MM-dd");
   const todayPoints = pointsByDate[todayKey] || 0;
   const totalPoints = Object.values(pointsByDate).reduce((a, b) => a + b, 0);
-  
+
   const sortedDaily = useMemo(() => {
     const currentMonthKey = format(new Date(), "yyyy-MM");
     return Object.keys(pointsByDate)
@@ -193,9 +195,7 @@ export default function PointsSystemPage() {
                   key={date}
                   className="border-b border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors"
                 >
-                  <TableCell>
-                    {format(parseISO(date), "dd MMM yyyy")}
-                  </TableCell>
+                  <TableCell>{format(parseISO(date), "dd MMM yyyy")}</TableCell>
                   <TableCell>{pointsByDate[date]}</TableCell>
                   <TableCell className="py-2">
                     <Button
@@ -236,9 +236,7 @@ export default function PointsSystemPage() {
                   key={month}
                   className="border-b border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors"
                 >
-                  <TableCell>
-                    {format(parseISO(month), "MMM yyyy")}
-                  </TableCell>
+                  <TableCell>{format(parseISO(month), "MMM yyyy")}</TableCell>
                   <TableCell>{pointsByMonth[month]}</TableCell>
                 </TableRow>
               )}
@@ -355,7 +353,7 @@ function PaginatedTable({
       <div className="mt-4">
         <DataTable
           headers={headers}
-          data={paginatedData as any[]}
+          data={paginatedData}
           renderRow={renderRow}
           emptyState={<td colSpan={headers.length}>No data</td>}
         />

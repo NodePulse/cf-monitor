@@ -5,14 +5,20 @@ import { Suspense } from 'react';
 
 const DEFAULT_USER_HANDLE = 'sachin_bh123'; // Fallback handle
 
+type Problem = {
+  contestId?: number;
+  index?: string;
+  name?: string;
+  rating?: number;
+  tags?: string[];
+  [key: string]: unknown; // Use unknown for other properties
+};
+
 type Submission = {
   id: number;
   creationTimeSeconds: number;
   verdict?: string;
-  problem: {
-    rating?: number;
-    [key: string]: any;
-  };
+  problem: Problem;
 };
 
 async function getSubmissions(handle: string): Promise<Submission[]> {

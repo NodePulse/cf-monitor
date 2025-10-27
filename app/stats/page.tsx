@@ -1,15 +1,12 @@
 // app/stats/page.tsx
 
 import StatsView from './StatsView';
+import { Submission } from '@/types';
 import { Suspense } from 'react';
 
 const DEFAULT_USER_HANDLE = 'sachin_bh123'; // Fallback handle
-
-type Submission = {
-  [key: string]: any;
-};
  
-async function getSubmissions(handle: string) {
+async function getSubmissions(handle: string): Promise<Submission[]> {
   try {
     const res = await fetch(`https://codeforces.com/api/user.status?handle=${handle}&from=1&count=5000`);
     if (!res.ok) {
