@@ -16,8 +16,12 @@ export const useCodeforcesSubmissions = (handle: string, count: number) => {
       if (data.status !== "OK") throw new Error(data.comment || "Fetch failed");
       setAllSubmissions(data.result);
       setError(null);
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("An unknown error occurred while fetching submissions.");
+      }
     } finally {
       setLoading(false);
     }

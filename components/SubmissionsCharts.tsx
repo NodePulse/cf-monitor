@@ -14,6 +14,7 @@ import {
   YAxis,
   Bar,
   Legend,
+  PieLabelRenderProps,
 } from "recharts";
 import { Submission } from "../types";
 
@@ -28,7 +29,9 @@ const COLORS = [
 
 const RADIAN = Math.PI / 180;
 
-interface CustomizedLabelProps {
+// Define a more specific type for the Pie label props.
+// This is safer than `as any` because it documents the expected shape.
+interface CustomPieLabelProps extends PieLabelRenderProps {
   cx: number;
   cy: number;
   midAngle: number;
@@ -36,7 +39,9 @@ interface CustomizedLabelProps {
   outerRadius: number;
   percent: number;
 }
-const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }: CustomizedLabelProps) => {
+
+const renderCustomizedLabel = (props: PieLabelRenderProps) => {
+  const { cx, cy, midAngle, innerRadius, outerRadius, percent } = props as CustomPieLabelProps;
   const radius = innerRadius + (outerRadius - innerRadius) * 0.6;
   const x = cx + radius * Math.cos(-midAngle * RADIAN);
   const y = cy + radius * Math.sin(-midAngle * RADIAN);
